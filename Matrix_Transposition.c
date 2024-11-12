@@ -1,6 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
+
+
+//SYMMETRIC CONTROL FUNCTION 
+bool checkSym(float** matrix, int N){
+    for(int i =0; i<N; i++){
+        for (int j=0; j<N; j++){
+            if (matrix[i][j]!=matrix[j][i]){
+               printf("the matrix is not symmetric \n");
+               return false;
+            }
+        }
+    }
+    return true;
+}
+//TRANSPOSE MATRIX FUNCTION
+void matTranspose(float** matrix, float** transpose, int N) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            transpose[j][i] = matrix[i][j];
+        }
+    }
+}
+
+
+
 
 
 void initializeMatrix(float** matrix, int N) {
@@ -11,13 +37,7 @@ void initializeMatrix(float** matrix, int N) {
     }
 }
 
-void transposeMatrix(float** matrix, float** transpose, int N) {
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            transpose[j][i] = matrix[i][j];
-        }
-    }
-}
+
 
 void printMatrix(float** matrix, int N) {
     for (int i = 0; i < N; i++) {
@@ -28,10 +48,29 @@ void printMatrix(float** matrix, int N) {
     }
 }
 
+
+
+
 int main() {
     int N;
-    printf("Inserisci la dimensione N della matrice (N x N): ");
-    scanf("%d", &N);
+    bool inputVerification=true;
+    bool symmetricMatrix;
+    clock_t t1, t2;
+    
+    
+    
+    
+    while (inputVerification){
+      printf("Inserisci la dimensione N della matrice (N x N): ");
+      scanf("%d", &N);
+      if((N > 0) && ((N & (N - 1)) == 0)){ //verify the power of 2
+        inputVerification=false;
+      }else {
+        printf("The input number is not a power of 2 \n");
+      }
+    }
+   
+     
 
     // Allocazione dinamica delle matrici
     float** matrix = (float**)malloc(N * sizeof(float*));
@@ -45,14 +84,25 @@ int main() {
     srand(time(NULL));
     initializeMatrix(matrix, N);
 
-    printf("Matrice originale:\n");
-    printMatrix(matrix, N);
+    //printf("Matrice originale:\n");
+    //printMatrix(matrix, N);
+    
+    symmetricMatrix=checkSym(matrix, N);
+    
+    
 
     // Calcolo della trasposta
-    transposeMatrix(matrix, transpose, N);
+    
+    t1=clock();
+    matTranspose(matrix, transpose, N);
+    t2=clock();
+    
+    printf("tempo calcolo trasposta: %f \n", (double)(t2-t1)/CLOCKS_PER_SEC);
+    //printf("\nMatrice trasposta:\n");
+    //printMatrix(transpose, N);
 
-    printf("\nMatrice trasposta:\n");
-    printMatrix(transpose, N);
+
+
 
     // Deallocazione della memoria
     for (int i = 0; i < N; i++) {
@@ -64,3 +114,12 @@ int main() {
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
