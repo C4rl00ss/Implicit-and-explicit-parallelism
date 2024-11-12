@@ -5,16 +5,16 @@
 
 
 //SYMMETRIC CONTROL FUNCTION 
-bool checkSym(float** matrix, int N){
+void checkSym(float** matrix, int N){
     for(int i =0; i<N; i++){
         for (int j=0; j<N; j++){
             if (matrix[i][j]!=matrix[j][i]){
                printf("the matrix is not symmetric \n");
-               return false;
+               return;
             }
         }
     }
-    return true;
+    printf("the matrix is symmetric \n");
 }
 //TRANSPOSE MATRIX FUNCTION
 void matTranspose(float** matrix, float** transpose, int N) {
@@ -54,7 +54,7 @@ void printMatrix(float** matrix, int N) {
 int main() {
     int N;
     bool inputVerification=true;
-    bool symmetricMatrix;
+    
     clock_t t1, t2;
     
     
@@ -87,7 +87,7 @@ int main() {
     //printf("Matrice originale:\n");
     //printMatrix(matrix, N);
     
-    symmetricMatrix=checkSym(matrix, N);
+    checkSym(matrix, N);
     
     
 
