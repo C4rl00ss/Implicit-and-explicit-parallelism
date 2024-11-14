@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <omp.h>
 #define N_ESECUZIONI 3
+#define M 10000
 
 //16.384    8.192
 
@@ -21,7 +22,8 @@ void checkSym(float** matrix, int N){
     printf("La matrice è simmetrica.\n");
 }
 
-// Funzione di trasposizione sequenziale
+
+// SEQUENTIAL
 void matTranspose(float** matrix, float** transpose, int N) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -31,8 +33,8 @@ void matTranspose(float** matrix, float** transpose, int N) {
 }
 
 
-// Funzione di trasposizione implicita
-void matTransposeImp(float** matrix, float** transpose, int N) {
+// SIMD
+void matTransposeImpSimd(float** matrix, float** transpose, int N) {
     for (int i = 0; i < N; i++) {
         #pragma simd
         for (int j = 0; j < N; j++) {
@@ -41,7 +43,26 @@ void matTransposeImp(float** matrix, float** transpose, int N) {
     }
 }
 
+// UNROLL
+void matTransposeImpUnroll(float** matrix, float** transpose, int N) {
+    for (int i = 0; i < N; i++) {
+        #pragma unroll
+        for (int j = 0; j < N; j++) {
+            transpose[j][i] = matrix[i][j];
+        }
+    }
+}
 
+// SIMD UNROLL
+void matTransposeImpSU(float** matrix, float** transpose, int N) {
+    for (int i = 0; i < N; i++) {
+        #pragma simd
+        #pragma unroll
+        for (int j = 0; j < N; j++) {
+            transpose[j][i] = matrix[i][j];
+        }
+    }
+}
 
 
 
@@ -71,10 +92,10 @@ void printMatrix(float** matrix, int N) {
 
 
 int main() {
-    int N;
+    int N=M;
     bool inputVerification = true;
     double t1, t2;
-    
+/*
     //input verification
     while (inputVerification){
         printf("Inserisci la dimensione N della matrice (N x N): ");
@@ -85,7 +106,7 @@ int main() {
             printf("Il numero inserito non è una potenza di 2.\n");
         }
     }
-   
+*/   
    
     // Allocazione dinamica delle matrici
     float** matrix = (float**)malloc(N * sizeof(float*));
@@ -110,23 +131,31 @@ int main() {
     
     
     
-    for (int j=0; j<N_ESECUZIONI; j++){
-    // Calcolo della trasposta in sequenziale
+    
+    //SEQUENZIALE
     t1 = omp_get_wtime();
     matTranspose(matrix, transpose, N);
     t2 = omp_get_wtime();
     printf("SERIALE: %f secondi\n", t2 - t1);
     
-    //calcolo transposta implicta
+    //SIMD
     t1 = omp_get_wtime();
-    matTransposeImp(matrix, transpose, N);
+    matTransposeImpSimd(matrix, transpose, N);
     t2 = omp_get_wtime();
     printf("SIMD:    %f secondi\n", t2 - t1);
-    }
     
     
+     //UNROLL
+    t1 = omp_get_wtime();
+    matTransposeImpUnroll(matrix, transpose, N);
+    t2 = omp_get_wtime();
+    printf("UNROLL:    %f secondi\n", t2 - t1);
     
-    
+    //SIMD E UNROLL
+    t1 = omp_get_wtime();
+    matTransposeImpSU(matrix, transpose, N);
+    t2 = omp_get_wtime();
+    printf("SIMD/UNROLL:    %f secondi\n", t2 - t1);
     
     
     
