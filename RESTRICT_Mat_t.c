@@ -9,11 +9,11 @@
 //16.384    8.192
 
 
-// Funzione di controllo simmetria
-void checkSym(float** matrix, int N){
-    for(int i =0; i<N; i++){
-        for (int j=0; j<N; j++){
-            if (matrix[i][j] != matrix[j][i]){
+// Funzione di controllo simmetria 
+void checkSym(float* restrict * restrict matrix, int N) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (matrix[i][j] != matrix[j][i]) {
                 printf("La matrice non è simmetrica.\n");
                 return;
             }
@@ -32,9 +32,17 @@ void matTranspose(float** matrix, float** transpose, int N) {
     }
 }
 
+// SEQUENTIAL
+void matTransposeRestrict(float* restrict * restrict matrix, float* restrict * restrict transpose, int N) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            transpose[j][i] = matrix[i][j];
+        }
+    }
+}
 
 // SIMD
-void matTransposeImpSimd(float** matrix, float** transpose, int N) {
+void matTransposeImpSimd(float* restrict * restrict matrix, float* restrict * restrict transpose, int N) {
     for (int i = 0; i < N; i++) {
         #pragma simd
         for (int j = 0; j < N; j++) {
@@ -44,7 +52,7 @@ void matTransposeImpSimd(float** matrix, float** transpose, int N) {
 }
 
 // UNROLL
-void matTransposeImpUnroll(float** matrix, float** transpose, int N) {
+void matTransposeImpUnroll(float* restrict * restrict matrix, float* restrict * restrict transpose, int N) {
     for (int i = 0; i < N; i++) {
         #pragma unroll
         for (int j = 0; j < N; j++) {
@@ -54,7 +62,7 @@ void matTransposeImpUnroll(float** matrix, float** transpose, int N) {
 }
 
 // SIMD UNROLL
-void matTransposeImpSU(float** matrix, float** transpose, int N) {
+void matTransposeImpSU(float* restrict * restrict matrix, float* restrict * restrict transpose, int N) {
     for (int i = 0; i < N; i++) {
         #pragma simd
         #pragma unroll
@@ -64,16 +72,15 @@ void matTransposeImpSU(float** matrix, float** transpose, int N) {
     }
 }
 
-
-
 // Inizializzazione della matrice con valori casuali
-void initializeMatrix(float** matrix, int N) {
+void initializeMatrix(float* restrict * restrict matrix, int N) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            matrix[i][j] = (float)rand() / RAND_MAX * 10.0; 
+            matrix[i][j] = (float)rand() / RAND_MAX * 10.0;
         }
     }
 }
+
 
 // Stampa della matrice
 void printMatrix(float** matrix, int N) {
@@ -87,7 +94,7 @@ void printMatrix(float** matrix, int N) {
 
 
 
-
+///////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -129,38 +136,43 @@ int main() {
     
     
     
-    
-    
-    
-    //SEQUENZIALE
+    //SEQUENZIALE 
     t1 = omp_get_wtime();
-    matTranspose(matrix, transpose, N);
+    matTransposeRestrict(matrix, transpose, N);
     t2 = omp_get_wtime();
     double sequentialTime= t2-t1;
-    printf("SERIALE: %f secondi\n", sequentialTime);
+    printf("SERIALE:        %f secondi\n", sequentialTime);
+    
+    
+    //SEQUENZIALE RESTRICT
+    t1 = omp_get_wtime();
+    matTransposeRestrict(matrix, transpose, N);
+    t2 = omp_get_wtime();
+    printf("SEQ RESTRICT:   %f secondi  ----->", t2 - t1);
+    printf("  speed up : %f \n", sequentialTime/(t2-t1));
     
     //SIMD
     t1 = omp_get_wtime();
     matTransposeImpSimd(matrix, transpose, N);
     t2 = omp_get_wtime();
-    printf("SIMD:    %f secondi ----->", t2 - t1);
-    printf("speed up : %f \n", sequentialTime/(t2-t1));
+    printf("SIMD:           %f secondi  ----->", t2 - t1);
+    printf("  speed up : %f \n", sequentialTime/(t2-t1));
     
     
      //UNROLL
     t1 = omp_get_wtime();
     matTransposeImpUnroll(matrix, transpose, N);
     t2 = omp_get_wtime();
-     printf("UNROLL:    %f secondi ----->", t2 - t1);
-    printf("speed up : %f \n", sequentialTime/(t2-t1));
+    printf("UNROLL:         %f secondi  ----->", t2 - t1);
+    printf("  speed up : %f \n", sequentialTime/(t2-t1));
     
     
     //SIMD E UNROLL
     t1 = omp_get_wtime();
     matTransposeImpSU(matrix, transpose, N);
     t2 = omp_get_wtime();
-    printf("SIMD E UNROLL:    %f secondi ----->", t2 - t1);
-    printf("speed up : %f \n", sequentialTime/(t2-t1));
+    printf("SIMD E UNROLL:  %f secondi  ----->", t2 - t1);
+    printf("  speed up : %f \n", sequentialTime/(t2-t1));
     
     
     
