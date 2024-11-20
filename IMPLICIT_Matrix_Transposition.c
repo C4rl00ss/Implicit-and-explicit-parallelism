@@ -199,7 +199,7 @@ int main() {
     /*
     printf("Matrice originale:\n");
     printMatrix(matrix, N);
-    print("\n");
+    printf("\n");
     printf("\nMatrice trasposta:\n");
     printMatrix(transpose, N);
     */
