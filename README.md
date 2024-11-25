@@ -18,6 +18,9 @@ che
 
 2. ##### Main
    Il main inzia con un pezzo di codice condizionale che controlla se è presente la flag **Automatic** (che va aggiunta in fase di compilazione tramite la flag **-DAutomatic**). In caso la flag non fosse presente  il codice richiede all'utente di inserire la grandezza della Matrice che dovrà essere un numero dell'ordine della potenza di 2 e in caso questa condizione non fosse soddisfatta il codice ripropone la domanda finche non si inserisce un input valido. In caso la flag fosse presente il codice salta il processo di input manuale da parte dell'utente e quindi anche la sua verifica e assegna alla variabile **N** il valore definito in AUTOMATIC_MATRIX_SIZE che di default corrisponde a 2^14=16384 su tutti i codici.
+Subito dopo viene l'allocazione della memoria della matrice, la sua inizializzazone random, la definizione delle varibili che verranno usate per calcolare il tempo e infine la verifica della simmetria della matrice.
+Seguono le chiamate a tutte le funzioni implementate, per ognuna viene misurato il tempo di esecuzione e stampato tale valore a schermo.
+Infine l'ultima parte del codice dealloca la memoria delle matrici.
 4. 
 
 5. 
