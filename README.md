@@ -1,5 +1,34 @@
+## IMPLICIT AND EXPLICIT PARALLELISM
+#### Directory description 
+In questa repository sono presenti due cartelle contenenti dei codici, un file pbs "ProgramRun.pbs" e il codice finale in c "Best_implicit_and_explicit_combinations.c" che verrà compilato ed eseguito dal file pds.
+Le due cartelle contengono tutti i codici utilizzati per raccogliere i dati: la cartella IMPLICIT contiene i codici relativi alle tecniche di parallelizzazione implicita e di ottimizzazioni per l'accesso in memoria, mentre la cartella EXPLICIT contiene i codici relativi alle tecniche di programmazione parallela tramite la libreria OpenMP. 
+
+#### Code execution
+The PBS file contains all the commands required to compile and execute the "Best_implicit_and_explicit_combinations.c" file located in the same directory as the PBS file.  
+All files are written in C, and the compiler used in the tests is GCC version 9.1.0.  
+To run the PBS file, you need to:  
+1. Copy the "ProgramRun.pbs" file and the "Best_implicit_and_explicit_combinations.c" file to the cluster.  
+2. Open the PBS file and modify the line indicating the location of the C file to be compiled (comments in the PBS file guide this operation).  
+3. Save the PBS file.  
+4. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.  
+
+
+#### What resources does the pbs file require:
+Il file pbs richiede al cluster per 2 minuti di tempo un nodo con 1gb di ram e 96 cpu disponibili. Le cpu sono necessarie per testare la funzione che implementa il metodo di programmazione parallela con Openmp
+
+#### Output files
+Il file pbs "ProgramRun.pbs" genererà tre output, il codice compilato col nome "best_I_E_compilated", il file errore di nome "Error_file.e" e infine il file con gli output nominato "Output_file.o". 
+
+#### what's in the file and how to read it
+Nel file "Output_file.o" sono presenti gli output di piu funzioni, esse sono le funzioni con le implementazioni che meglio hanno performato durante i test, ovviamente è presente anche la funzione sequenziale che serve da comparatore per lo speed-up e l'efficienza. Tutti i risultati sono stati eseguiti su una matrice quadrata N*N con N pari a 8192. La fu  
+
+
+
+
+
+
 ## Implicit-and-explicit-parallelism
-This repository contains NNN files: 3 for the sequential code, identified by the letter **S** at the beginning of the file name, and NNN for the parallel code, identified by the letter **P** at the beginning of the file name.
+
 
 Each file contains a different implementation. I decided to separate them into multiple files to make the code more readable and organized.
 
