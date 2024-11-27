@@ -19,7 +19,7 @@ Il file pbs richiede al cluster per 2 minuti di tempo un nodo con 1gb di ram e 9
 #### Output files
 Il file pbs "ProgramRun.pbs" genererà tre output, il codice compilato col nome "best_I_E_compilated", il file errore di nome "Error_file.e" e infine il file con gli output nominato "Output_file.o". 
 
-#### what's in the file and how to read it
+#### what's in the output file and how to read it
 Nel file "Output_file.o" sono presenti gli output di piu funzioni, esse sono le funzioni con le implementazioni che meglio hanno performato durante i test, ovviamente è presente anche la funzione sequenziale che serve da comparatore per lo speed-up e l'efficienza. Tutti i risultati sono stati eseguiti su una matrice quadrata N*N con N pari a 8192. La fu  
 
 
