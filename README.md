@@ -1,47 +1,72 @@
 ## IMPLICIT AND EXPLICIT PARALLELISM
-#### Directory description 
+### Directory description 
 In questa repository sono presenti due cartelle contenenti dei codici, un file pbs "ProgramRun.pbs" e il codice finale in c "Best_implicit_and_explicit_combinations.c" che verrà compilato ed eseguito dal file pds.
 Le due cartelle contengono tutti i codici utilizzati per raccogliere i dati: la cartella IMPLICIT contiene i codici relativi alle tecniche di parallelizzazione implicita e di ottimizzazioni per l'accesso in memoria, mentre la cartella EXPLICIT contiene i codici relativi alle tecniche di programmazione parallela tramite la libreria OpenMP. 
 
-#### Code execution
-The PBS file contains all the commands required to compile and execute the "Best_implicit_and_explicit_combinations.c" file located in the same directory as the PBS file.  
-All files are written in C, and the compiler used in the tests is GCC version 9.1.0.  
+### Code execution with pbs
+- __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size.__   
+- The PBS file contains all the commands required to compile and execute the "Best_implicit_and_explicit_combinations.c" file located in the same directory as the PBS file.  
+- All files are written in C, and the compiler used in the tests is the GCC in the version 9.1.0.  
+
 To run the PBS file, you need to:  
 1. Copy the "ProgramRun.pbs" file and the "Best_implicit_and_explicit_combinations.c" file to the cluster.  
 2. Open the PBS file and modify the line indicating the location of the C file to be compiled (comments in the PBS file guide this operation).  
 3. Save the PBS file.  
-4. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.  
+4. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.
 
+### Code execution in a interactive session
+- __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size__       
+1. Copy the "Best_implicit_and_explicit_combinations.c" file to the cluster.
+2. Open an interactive session with 1 node, 96 cpus , 1 gb of RAM
+3. load the module gcc91 for the c compiler GCC 9.1.0
+4. Use this to compile the code "gcc Best_implicit_and_explicit_combinations.c -o best_I_E_compilated -fopenmp -DAutomatic"
+5. run the output file "best_I_E_compilated"
+6. If you want to manually enter the size of the matrix, remove the flag "-DAutomatic". The program only accepts values ​​of the power of two.
 
-#### What resources does the pbs file require:
+### What resources does the pbs file require:
 Il file pbs richiede al cluster per 2 minuti di tempo un nodo con 1gb di ram e 96 cpu disponibili. Le cpu sono necessarie per testare la funzione che implementa il metodo di programmazione parallela con Openmp
 
-#### Output files
-Il file pbs "ProgramRun.pbs" genererà tre output, il codice compilato col nome "best_I_E_compilated", il file errore di nome "Error_file.e" e infine il file con gli output nominato "Output_file.o". 
+### Output files
+The PBS file "ProgramRun.pbs" will generate three outputs:  
+- The compiled code, named "best_I_E_compilated",  
+- The error file, named "Error_file.e",  
+- And the output file, named "Output_file.o".  
 
-#### what's in the output file and how to read it
-Nel file "Output_file.o" sono presenti gli output di piu funzioni, esse sono le funzioni con le implementazioni che meglio hanno performato durante i test, ovviamente è presente anche la funzione sequenziale che serve da comparatore per lo speed-up e l'efficienza. Tutti i risultati sono stati eseguiti su una matrice quadrata N*N con N pari a 8192. La fu  
+### what's in the output file and how to read it
+In the file "Output_file.o", you will find the outputs of multiple functions. These include some of the best-performing implementations based on the tests, as well as the sequential function, which serves as a baseline for comparing speed-up and efficiency.  
 
+The codes execute the matrix transposition using, by default, a square matrix of size **N x N**, where **N = 8192**, __thanks to the `-DAutomatic` flag included in the line that compiles the C code__ (see the "Flags" section for a detailed explanation of the flags used).  
 
-
-
-
-
-## Implicit-and-explicit-parallelism
-
-
-Each file contains a different implementation. I decided to separate them into multiple files to make the code more readable and organized.
-
-1. #### SEQUENTIAL CODE FILES:
-   - **S_IMPLICIT_Matrix_Transposition.c**
-   - **S_PREFETCHING_Matrix_Transposition.c**
-   - **S_RESTRICT_Matrix_Transposition.c**
-
-2. #### PARALLEL CODE (OMP) FILES:
-che
+The generated output will contain the execution times for the following functions:  
+- The sequential function, __matTranspose__,  
+- The SIMD-optimized function, __matTransposeSIMD__ (implemented with OpenMP),  
+- The prefetching-optimized function, __matTransposePrefetching__,  
+- The function __matTransposeRestrict_Unroll__ (implemented using the restrict keyword and loop unrolling),  
+- And finally, the function __matTransposeOMP_COLLAPSE__ (implemented with #pragma omp parallel and #pragma omp for collapse(2)).  
 
 
-### Struttura dei codici sequenziali:
+
+### Flags 
+The only two required flags are -fopenmp and -DAutomatic:
+- ##### fopenm
+This flag enables the OpenMP library, which is used in the project for three key purposes:
+1. Measuring execution time with the omp_get_wtime function.
+2. Using directives like #pragma omp simd to optimize the code through vectorization.
+3. Enabling parallel programming with directives such as #pragma omp parallel.
+
+- ##### DAutomatic:
+This flag eliminates the need to manually specify the matrix size at runtime. When the flag is used, the program automatically sets the matrix size to 8192. This is defined in the header of the C file "Best_implicit_and_explicit_combinations.c" by the line *#define AUTOMATIC_MATRIX_SIZE 8192*, which assigns the value 8192 to the matrix size **N**. This flag can be removed during compilation, but __NOT IN THE PBS FILE__, as the code will then prompt the user for the matrix size, which cannot be provided in a PBS batch script, leading to execution failure.   
+__IF YOU WANT TO REMOVE THE -DAutomatic FLAG IN ORDER TO SET THE MATRIX SIZE  (ONLY VALUES THAT ARE POWERS OF 2), YOU MUST OPEN AN INTERACTIVE SESSION.__   
+
+- Alternatively, to change the matrix size, you can edit the C code "Best_implicit_and_explicit_combinations.c" and replace the line *#define AUTOMATIC_MATRIX_SIZE 8192* with a desired value, while keeping the -DAutomatic flag.
+
+
+
+### OTHER FILESE
+
+
+
+### General structure of the codes:
 1. ##### Dichiarazione funzioni
    I codici sequenziali sono strutturati in modo molto simile tra loro: all'inizio del file sono presenti le implemetazioni delle funzioni __matTranspose__, ognuna di esse ha una implementazione diversa che viene indicata nel nome stesso della funuzione per distinguerle(es. matTranspose_SIMD implementa il metodo SIMD al suo interno). Subito dopo le funzioni __matTranspose__ viene l'implementazione delle funzioni __checkSym__ per il controllo della simmetria della matrice, __initializeMatrix__ per l'inizializzazione con valori float random da 0 a 10.0 della matrice ed infine __printMatrix__ che stamba la matrice che gli viene passata in input.
 
@@ -50,9 +75,7 @@ che
 Subito dopo viene l'allocazione della memoria della matrice, la sua inizializzazone random, la definizione delle varibili che verranno usate per calcolare il tempo e infine la verifica della simmetria della matrice.
 Seguono le chiamate a tutte le funzioni implementate, per ognuna viene misurato il tempo di esecuzione e stampato tale valore a schermo.
 Infine l'ultima parte del codice dealloca la memoria delle matrici.
-4. 
 
-5. 
 
 
 
