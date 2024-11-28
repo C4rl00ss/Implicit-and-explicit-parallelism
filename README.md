@@ -1,9 +1,9 @@
 ## IMPLICIT AND EXPLICIT PARALLELISM
 ### Directory description 
-In questa repository sono presenti due cartelle contenenti dei codici, un file pbs "ProgramRun.pbs" e il codice finale in c "Best_implicit_and_explicit_combinations.c" che verrà compilato ed eseguito dal file pds.
-Le due cartelle contengono tutti i codici utilizzati per raccogliere i dati: la cartella IMPLICIT contiene i codici relativi alle tecniche di parallelizzazione implicita e di ottimizzazioni per l'accesso in memoria, mentre la cartella EXPLICIT contiene i codici relativi alle tecniche di programmazione parallela tramite la libreria OpenMP. 
+In this repository there are two folders containing codes, a pbs file "ProgramRun.pbs" and the final c code "Best_implicit_and_explicit_combinations.c" which will be compiled and run from the pds file.
+The two folders contain all the codes used to collect the data: the IMPLICIT folder contains the codes relating to the implicit parallelization techniques and optimizations for memory access, while the EXPLICIT folder contains the codes relating to the parallel programming techniques through the OpenMP library.
 
-### Code execution with pbs
+### How to execute the main code with pbs
 - __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size.__   
 - The PBS file contains all the commands required to compile and execute the "Best_implicit_and_explicit_combinations.c" file located in the same directory as the PBS file.  
 - All files are written in C, and the compiler used in the tests is the GCC in the version 9.1.0.  
@@ -14,7 +14,7 @@ To run the PBS file, you need to:
 3. Save the PBS file.  
 4. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.
 
-### Code execution in a interactive session
+### How to execute the main code in a interactive session
 - __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size__       
 1. Copy the "Best_implicit_and_explicit_combinations.c" file to the cluster.
 2. Open an interactive session with 1 node, 96 cpus , 1 gb of RAM
@@ -24,7 +24,7 @@ To run the PBS file, you need to:
 6. If you want to manually enter the size of the matrix, remove the flag "-DAutomatic". The program only accepts values ​​of the power of two.
 
 ### What resources does the pbs file require:
-Il file pbs richiede al cluster per 2 minuti di tempo un nodo con 1gb di ram e 96 cpu disponibili. Le cpu sono necessarie per testare la funzione che implementa il metodo di programmazione parallela con Openmp
+The pbs file requests a node with 1GB of RAM and 96 available CPUs from the cluster for 2 minutes. The CPUs are needed to test the function that implements the parallel programming method with OpenMP
 
 ### Output files
 The PBS file "ProgramRun.pbs" will generate three outputs:  
