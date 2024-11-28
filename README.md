@@ -1,7 +1,6 @@
 ## IMPLICIT AND EXPLICIT PARALLELISM
 ### Directory description 
-In this repository there are two folders containing codes, a pbs file "ProgramRun.pbs" and the final c code "Best_implicit_and_explicit_combinations.c" which will be compiled and run from the pds file.
-The two folders contain all the codes used to collect the data: the IMPLICIT folder contains the codes relating to the implicit parallelization techniques and optimizations for memory access, while the EXPLICIT folder contains the codes relating to the parallel programming techniques through the OpenMP library.
+In this repository there is a pbs file "ProgramRun.pbs", the final c code "Best_implicit_and_explicit_combinations.c" which will be compiled and run from the pds file and two folders containing codes. The two folders contain all the codes used to collect the data: the IMPLICIT folder contains the codes relating to the implicit parallelization techniques and optimizations for memory access, while the EXPLICIT folder contains the codes relating to the parallel programming techniques through the OpenMP library.
 
 ### How to execute the main code with pbs
 - __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size.__   
