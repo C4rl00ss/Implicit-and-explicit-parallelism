@@ -4,7 +4,7 @@ In this repository there is a pbs file "ProgramRun.pbs", the final c code "Best_
 
 ### How to execute the main code with pbs
 - __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size.__   
-- The PBS file contains all the commands required to compile and execute the "Best_implicit_and_explicit_combinations.c" file located in the same directory as the PBS file.  
+- The PBS file contains all the commands required to compile and execute the "Best_implicit_and_explicit_combinations.c".  
 - All files are written in C, and the compiler used in the tests is the GCC in the version 9.1.0.  
 
 To run the PBS file, you need to:  
@@ -18,9 +18,9 @@ To run the PBS file, you need to:
 1. Copy the "Best_implicit_and_explicit_combinations.c" file to the cluster.
 2. Open an interactive session with 1 node, 96 cpus , 1 gb of RAM
 3. load the module gcc91 for the c compiler GCC 9.1.0
-4. Use this to compile the code "gcc Best_implicit_and_explicit_combinations.c -o best_I_E_compilated -fopenmp -DAutomatic"
+4. Use this to compile the code: "gcc Best_implicit_and_explicit_combinations.c -o best_I_E_compilated -fopenmp -DAutomatic"
 5. run the output file "best_I_E_compilated"
-6. If you want to manually enter the size of the matrix, remove the flag "-DAutomatic". The program only accepts values ​​of the power of two.
+6. If you want to manually enter the size of the matrix, remove the flag "-DAutomatic", compile and then execute the output file. The program will ask you the matrix sixe. The only accepted values are numbers ​​of the power of two.
 
 ### What resources does the pbs file require:
 The pbs file requests a node with 1GB of RAM and 96 available CPUs from the cluster for 2 minutes. The CPUs are needed to test the function that implements the parallel programming method with OpenMP
@@ -34,7 +34,7 @@ The PBS file "ProgramRun.pbs" will generate three outputs:
 ### what's in the output file and how to read it
 In the file "Output_file.o", you will find the outputs of multiple functions. These include some of the best-performing implementations based on the tests, as well as the sequential function, which serves as a baseline for comparing speed-up and efficiency.  
 
-The codes execute the matrix transposition using, by default, a square matrix of size **N x N**, where **N = 8192**, __thanks to the `-DAutomatic` flag included in the line that compiles the C code__ (see the "Flags" section for a detailed explanation of the flags used).  
+The codes execute the matrix transposition using, by default, a square matrix of size **N x N**, where **N = 8192**, __thanks to the `-DAutomatic` flag__ (see the "Flags" section for a detailed explanation of the flags used).  
 
 The generated output will contain the execution times for the following functions:  
 - The sequential function, __matTranspose__,  
@@ -57,11 +57,16 @@ This flag enables the OpenMP library, which is used in the project for three key
 This flag eliminates the need to manually specify the matrix size at runtime. When the flag is used, the program automatically sets the matrix size to 8192. This is defined in the header of the C file "Best_implicit_and_explicit_combinations.c" by the line *#define AUTOMATIC_MATRIX_SIZE 8192*, which assigns the value 8192 to the matrix size **N**. This flag can be removed during compilation, but __NOT IN THE PBS FILE__, as the code will then prompt the user for the matrix size, which cannot be provided in a PBS batch script, leading to execution failure.   
 __IF YOU WANT TO REMOVE THE -DAutomatic FLAG IN ORDER TO SET THE MATRIX SIZE  (ONLY VALUES THAT ARE POWERS OF 2), YOU MUST OPEN AN INTERACTIVE SESSION.__   
 
-- Alternatively, to change the matrix size, you can edit the C code "Best_implicit_and_explicit_combinations.c" and replace the line *#define AUTOMATIC_MATRIX_SIZE 8192* with a desired value, while keeping the -DAutomatic flag.
+- Alternatively, to change the matrix size, you can edit the C code "Best_implicit_and_explicit_combinations.c" and replace the line *#define AUTOMATIC_MATRIX_SIZE 8192* with a desired value, while keeping the -DAutomatic flag so the pbs file with a different matrix size can be used.
 
 
 
-### OTHER FILESE
+### OTHER FILES
+Gli altri file contengono tutte le implementazioni fatte e testate durante lo svolgimento del progetto. La struttura di ogni codice è pressoche identica (guardare paragrafo *General structure of the codes*) quindi le differenze sostanziali da un codice all'altro sono le implementazioni delle funzioni. In caso si voglia eseguire uno di questi file 
+
+
+
+
 
 
 
