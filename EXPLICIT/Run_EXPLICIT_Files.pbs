@@ -1,0 +1,39 @@
+#!/bin/bash
+# Job name
+#PBS -N IMPLICIT
+# Output files
+#PBS -o ./EXPLICIT_OUTPUT.o
+#PBS -e ./EXPLICIT_ERROR.e
+# Queue name
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=0:02:00
+# Number of nodes, cpus, and amount of memory
+#PBS -l select=1:ncpus=96:mem=1gb
+
+# Modules for C
+module load gcc91
+# Define gcc and g++ to use the version 9.1.0
+
+gcc() {
+    gcc-9.1.0 "$@"
+}
+gcc --version
+
+
+# Select the working directory 
+cd /home/carlo.osscazzador/ESAME/OPENMP            #<------------ change this line 
+
+# The code should be compiled before submitting the job
+gcc OMP_SIMPLE_Matrix_transposition.c -o OmpSimple_MT_compiled -fopenmp -DAutomatic
+gcc OMP_WITH_IMPLICIT_Matrix_Transposition.c -o OmpWithImplicit_MT_compiled -fopenmp -DAutomatic
+
+# Run hello
+echo -e "\n \n \n"
+echo "OMP_SIMPLE_Matrix_transposition.c file execution"
+./OmpSimple_MT_compiled
+echo -e "\n \n \n"
+echo "OMP_WITH_IMPLICIT_Matrix_Transposition.c file execution"
+./OmpWithImplicit_MT_compiled
+
+
