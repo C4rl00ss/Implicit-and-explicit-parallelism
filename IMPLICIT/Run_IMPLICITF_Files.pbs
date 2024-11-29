@@ -1,0 +1,43 @@
+#!/bin/bash
+# Job name
+#PBS -N IMPLICIT
+# Output files
+#PBS -o ./IMPLICIT_OUTPUT.o
+#PBS -e ./IMPLICIT_ERROR.e
+# Queue name
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=0:02:00
+# Number of nodes, cpus, and amount of memory
+#PBS -l select=1:ncpus=1:mem=1gb
+
+# Modules for C
+module load gcc91
+
+# Define gcc and to use the version 9.1.0
+gcc() {
+    gcc-9.1.0 "$@"
+}
+gcc --version
+
+
+# Select the working directory (change this line)
+cd /home/carlo.osscazzador/ESAME
+
+# The code should be compiled before submitting the job
+gcc IMPLICIT_Matrix_Transposition.c -o implicit_MT_compiled -fopenmp -DAutomatic
+gcc RESTRICT_Matrix_Transposition.c -o restrict_MT_compiled -fopenmp -DAutomatic
+gcc PREFETCHING_Matrix_Transposition.c -o prefetching_MT_compiled -fopenmp -DAutomatic
+
+# Run hello
+echo "IMPLICIT_Matrix_Transposition.c file execution"
+./implicit_MT_compiled
+echo
+echo
+echo "RESTRICT_Matrix_Transposition.c file execution"
+./restrict_MT_compiled
+echo
+echo
+echo "PREFETCHING_Matrix_Transposition.c file execution"
+./prefetching_MT_compiled
+
