@@ -1,0 +1,30 @@
+#!/bin/bash
+# Job name
+#PBS -N First_partial_deliverables
+# Output files
+#PBS -o ./Output_file.o
+#PBS -e ./Error_file.e
+# Queue name
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=0:02:00
+# Number of nodes, cpus, and amount of memory
+#PBS -l select=1:ncpus=96:mem=1gb
+
+# Modules for C
+module load gcc91
+
+
+gcc() {
+    gcc-9.1.0 "$@"
+}
+gcc --version
+
+# Select the working directory (change this line)
+cd /home/carlo.osscazzador/ESAME/finito
+
+# The code should be compiled before submitting the job
+gcc Best_implicit_and_explicit_combinations.c -o best_I_E_compilated -fopenmp -DAutomatic
+
+# Run hello
+./best_I_E_compilated
