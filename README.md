@@ -31,7 +31,7 @@ The PBS file "ProgramRun.pbs" will generate three outputs:
 - The error file, named "Error_file.e",  
 - And the output file, named "Output_file.o".  
 
-### what's in the output file and how to read it
+### What's in the output file and how to read it
 In the file "Output_file.o", you will find the outputs of multiple functions. These include some of the best-performing implementations based on the tests, as well as the sequential function, which serves as a baseline for comparing speed-up and efficiency.  
 
 The codes execute the matrix transposition using, by default, a square matrix of size **N x N**, where **N = 8192**, __thanks to the `-DAutomatic` flag__ (see the "Flags" section for a detailed explanation of the flags used).  
@@ -62,23 +62,20 @@ __IF YOU WANT TO REMOVE THE -DAutomatic FLAG IN ORDER TO SET THE MATRIX SIZE  (O
 
 
 ### OTHER FILES
-Gli altri file contengono tutte le implementazioni fatte e testate durante lo svolgimento del progetto. La struttura di ogni codice è pressoche identica (guardare paragrafo *General structure of the codes*) quindi le differenze sostanziali da un codice all'altro sono le implementazioni delle funzioni. In caso si voglia eseguire uno di questi file 
-
-
-
+Gli altri file contengono tutte le implementazioni usate nei test durante lo svolgimento del progetto. La struttura di ogni codice è pressoche identica (guardare paragrafo *General structure of the codes*) quindi le differenze sostanziali da un codice all'altro sono le implementazioni delle funzioni. In caso si voglia eseguire questi file basta rifare la procedura descritta nel paragrafo "__How to execute the main code with pbs__" in quanto in ogni cartella è presente un file pbs che esegue TUTTI i codici presenti nella cartella stampando in un unico file otput i risultati generati dai ogni codice.
 
 
 
 
 ### General structure of the codes:
-1. ##### Dichiarazione funzioni
-   I codici sequenziali sono strutturati in modo molto simile tra loro: all'inizio del file sono presenti le implemetazioni delle funzioni __matTranspose__, ognuna di esse ha una implementazione diversa che viene indicata nel nome stesso della funuzione per distinguerle(es. matTranspose_SIMD implementa il metodo SIMD al suo interno). Subito dopo le funzioni __matTranspose__ viene l'implementazione delle funzioni __checkSym__ per il controllo della simmetria della matrice, __initializeMatrix__ per l'inizializzazione con valori float random da 0 a 10.0 della matrice ed infine __printMatrix__ che stamba la matrice che gli viene passata in input.
+1. ##### Function declaration
+   The codes are structured in a very similar way to each other: at the beginning of the file there are the functions that perform the transpose of the matrix and they are all derived from the modified sequential __matTranspose__ function. Each new function thus created has been renamed so as to include the method with which it was implemented in the name (e.g. matTranspose_SIMD implements the SIMD method internally). Immediately after the transpose functions comes the implementation of the __checkSym__ functions for checking the symmetry of the matrix, __initializeMatrix__ for the initialization with random float values ​​from 0 to 10.0 of the matrix and finally __printMatrix__ which prints the matrix that is passed to it as input.
 
 2. ##### Main
-   Il main inzia con un pezzo di codice condizionale che controlla se è presente la flag **Automatic** (che va aggiunta in fase di compilazione tramite la flag **-DAutomatic**). In caso la flag non fosse presente  il codice richiede all'utente di inserire la grandezza della Matrice che dovrà essere un numero dell'ordine della potenza di 2 e in caso questa condizione non fosse soddisfatta il codice ripropone la domanda finche non si inserisce un input valido. In caso la flag fosse presente il codice salta il processo di input manuale da parte dell'utente e quindi anche la sua verifica e assegna alla variabile **N** il valore definito in AUTOMATIC_MATRIX_SIZE che di default corrisponde a 2^14=16384 su tutti i codici.
-Subito dopo viene l'allocazione della memoria della matrice, la sua inizializzazone random, la definizione delle varibili che verranno usate per calcolare il tempo e infine la verifica della simmetria della matrice.
-Seguono le chiamate a tutte le funzioni implementate, per ognuna viene misurato il tempo di esecuzione e stampato tale valore a schermo.
-Infine l'ultima parte del codice dealloca la memoria delle matrici.
+The main starts with a piece of conditional code that checks whether the **Automatic** flag is present (which must be added at compile time via the **-DAutomatic** flag). If the flag is not present the code asks the user to enter the size of the Matrix which must be a number of the order of the power of 2 and if this condition is not satisfied the code asks the question again until an input is inserted valid. If the flag is present, the code skips the manual input process by the user, and therefore also its verification, and assigns to the variable **N** the value defined in AUTOMATIC_MATRIX_SIZE which by default corresponds to 2^13= 8192 on all codes.
+Immediately after comes the allocation of the matrix memory in the heap, its random initialization, the definition of the variables that will be used to calculate the time and finally the verification of the symmetry of the matrix.
+This is followed by calls to all the implemented functions, for each one the execution time is measured and this value is printed on the screen.
+Finally, the last part of the code deallocates the matrix memory.
 
 
 
