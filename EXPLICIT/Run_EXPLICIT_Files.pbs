@@ -22,18 +22,22 @@ gcc --version
 
 
 # Select the working directory 
-cd /home/carlo.osscazzador/ESAME/OPENMP            #<------------ change this line 
+cd /home/            #<------------ change this line 
 
 # The code should be compiled before submitting the job
 gcc OMP_SIMPLE_Matrix_transposition.c -o OmpSimple_MT_compiled -fopenmp -DAutomatic
 gcc OMP_WITH_IMPLICIT_Matrix_Transposition.c -o OmpWithImplicit_MT_compiled -fopenmp -DAutomatic
 
+#set the number of thread for the "OMP_WITH_IMPLICIT_Matrix_Transposition.c" file 
+export OMP_NUM_THREADS=20
+
 # Run hello
-echo -e "\n \n \n"
-echo "OMP_SIMPLE_Matrix_transposition.c file execution"
-./OmpSimple_MT_compiled
 echo -e "\n \n \n"
 echo "OMP_WITH_IMPLICIT_Matrix_Transposition.c file execution"
 ./OmpWithImplicit_MT_compiled
+echo -e "\n \n \n"
+echo "OMP_SIMPLE_Matrix_transposition.c file execution"
+./OmpSimple_MT_compiled
+
 
 
