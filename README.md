@@ -12,7 +12,6 @@ To run the PBS file, you need to:
 1. Copy the "ProgramRun.pbs" file and the "Best_implicit_and_explicit_combinations.c" file to the cluster.  
 2. Open the PBS file and modify the line indicating the location of the C file to be compiled (comments in the PBS file guide this operation).  
 3. Save the PBS file.
-4. Use the "export OMP_NUM_THREADS=N" command into the bash to set the number of threads you want to use to perform the functions implemented with omp parallel
 5. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.
 
 ### How to execute the main code in a interactive session
@@ -27,20 +26,20 @@ To run the PBS file, you need to:
 ### What resources does the pbs file require:
 The pbs file requests a node with 1GB of RAM and 96 available CPUs from the cluster for 2 minutes. The CPUs are needed to test the function that implements the parallel programming method with OpenMP
 
-### Output files
+### Output files 
 The PBS file "ProgramRun.pbs" will generate three outputs:  
 - The compiled code, named "best_I_E_compilated",  
 - The error file, named "Error_file.e",  
 - And the output file, named "Output_file.o".  
 
-### What's in the output file and how to read it
+### What's in the output file "Output_file.o" and how to read it
 In the file "Output_file.o", you will find the outputs of multiple functions. These include some of the best-performing implementations based on the tests, as well as the sequential function, which serves as a baseline for comparing speed-up and efficiency.  
 
 The codes execute the matrix transposition using, by default, a square matrix of size **N x N**, where **N = 8192**, __thanks to the `-DAutomatic` flag__ (see the "Flags" section for a detailed explanation of the flags used).  
 
 The generated output will contain the execution times for the following functions:  
 - The sequential function, __matTranspose__,  
-- The SIMD-optimized function, __matTransposeSIMD__ (implemented with OpenMP),  
+- The SIMD-optimized function, __matTransposeSIMD__ (implemented with OpenMP simd),  
 - The prefetching-optimized function, __matTransposePrefetching__,  
 - The function __matTransposeRestrict_Unroll__ (implemented using the restrict keyword and loop unrolling),  
 - And finally, the function __matTransposeOMP_COLLAPSE__ (implemented with #pragma omp parallel and #pragma omp for collapse(2)).  
