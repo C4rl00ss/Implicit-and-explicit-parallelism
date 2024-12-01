@@ -21,8 +21,8 @@ gcc() {
 gcc --version
 
 
-# Select the working directory (change this line)
-cd /home/carlo.osscazzador/ESAME
+# Select the working directory 
+cd /home/                          #<-------change this line
 
 # The code should be compiled before submitting the job
 gcc IMPLICIT_Matrix_Transposition.c -o implicit_MT_compiled -fopenmp -DAutomatic
