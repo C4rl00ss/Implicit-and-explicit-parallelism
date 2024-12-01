@@ -10,8 +10,9 @@ In this repository there is a pbs file "ProgramRun.pbs", the final c code "Best_
 To run the PBS file, you need to:  
 1. Copy the "ProgramRun.pbs" file and the "Best_implicit_and_explicit_combinations.c" file to the cluster.  
 2. Open the PBS file and modify the line indicating the location of the C file to be compiled (comments in the PBS file guide this operation).  
-3. Save the PBS file.  
-4. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.
+3. Save the PBS file.
+4. Use the "export OMP_NUM_THREADS=N" command into the bash to set the number of threads you want to use to perform the functions implemented with omp parallel
+5. Finally, submit the PBS file using the directive `qsub ProgramRun.pbs` in the cluster's bash terminal, and the file will be processed.
 
 ### How to execute the main code in a interactive session
 - __It is recommended to first read the flag session regarding the -DAutomatic flag for setting the matrix size__       
