@@ -21,7 +21,7 @@ gcc() {
 gcc --version
 
 # Select the working directory 
-cd /home/carlo.osscazzador/ESAME/finito   #<---------- change this line
+cd /home/                                #<---------- change this line
 
 # The code should be compiled before submitting the job
 gcc Best_implicit_and_explicit_combinations.c -o best_I_E_compilated -fopenmp -DAutomatic
