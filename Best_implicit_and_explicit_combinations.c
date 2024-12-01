@@ -181,21 +181,14 @@ int main() {
 
 //TRANSPOSE EXECUTION FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////////////////
-    
+    printf("Matrix size: %d\n",N);
+
     printf("//////////////////////////////////////////////////////////\n");
     
-  /*  
-                    //PREPARATORY TEST
-//---------------------------------------------------------------------------------------------------------------
-    //used because the first run function is always the slowest due to the load of cache
-    t1 = omp_get_wtime();
-    matTranspose(matrix, transpose, N);
-    t2 = omp_get_wtime();
-    printf("FIRST TEST, DO NOT CONSIDER THIS TIME:    %f secondi\n\n", t2 - t1);
-*/
+  
     
     
-    
+
     
                     //IMPLICIT PARALLELISM
 //---------------------------------------------------------------------------------------------------------------
